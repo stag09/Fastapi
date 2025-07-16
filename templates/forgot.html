@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Forgot Password</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .hidden { display: none; }
+    .success { color: green; }
+    .error { color: red; }
+    #message { font-weight: bold; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🔐 Forgot Password</h2>
+    
+    <!-- 🔹 OTP + New Password Fields (initially hidden) -->
+    <div id="otp-section" class="hidden">
+      <input type="text" id="otp" placeholder="Enter OTP" required />
+      <input type="password" id="new_password" placeholder="Enter New Password" required />
+      <button onclick="resetPassword()">Reset Password</button>
+    </div>
+
+    <!-- 🔹 Message Display -->
+    <div id="message" style="text-align:center;"></div>
+
+    <!-- 🔙 Back to login -->
+    <p style="text-align:center; margin-top: 20px;">
+      <a href="/">🔙 Back to Login</a>
+    </p>
+  </div>
+
+  <script>
+    const API_BASE = "http://127.0.0.1:8000";
+
+    // ✅ Send OTP
+    function sendOTP() {
+      const email = document.getElementById("email").value;
+      const message = document.getElementById("message");
+      message.textContent = "";
+
+      if (!email) {
+        message.textContent = "❌ Please enter your email.";
+        message.className = "error";
+        return;
+      }
+
+      fetch(`${API_BASE}/send-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.message === "OTP sent to your email") {
+          document.getElementById("otp-section").classList.remove("hidden");
+          message.textContent = "✅ OTP sent to your email.";
+          message.className = "success";
+        } else {
+          message.textContent = "❌ " + (data.detail || "Failed to send OTP.");
+          message.className = "error";
+        }
+      })
+      .catch(error => {
+        console.error("Error sending OTP:", error);
+        message.textContent = "❌ Error sending OTP.";
+        message.className = "error";
+      });
+    }
+
+    // ✅ Reset Password
+    function resetPassword() {
+      const email = document.getElementById("email").value;
+      const otp = document.getElementById("otp").value;
+      const newPassword = document.getElementById("new_password").value;
+      const message = document.getElementById("message");
+      message.textContent = "";
+
+      if (!email || !otp || !newPassword) {
+        message.textContent = "❌ All fields are required.";
+        message.className = "error";
+        return;
+      }
+
+      fetch(`${API_BASE}/verify-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, otp, new_password: newPassword })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.message === "Password reset successfully") {
+          alert("✅ Password has been reset successfully!");
+          window.location.href = "/";
+        } else {
+          message.textContent = "❌ " + (data.detail || "Failed to reset password.");
+          message.className = "error";
+        }
+      })
+      .catch(error => {
+        console.error("Error resetting password:", error);
+        message.textContent = "❌ Error resetting password.";
+        message.className = "error";
+      });
+    }
+  </script>
+</body>
+</html>
