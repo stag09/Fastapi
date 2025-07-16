@@ -32,6 +32,10 @@ app.add_middleware(
 )
 
 
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to my FastAPI app!"}
+
 # --- User Registration ---
 @app.post("/register", response_model=schemas.UserOut, tags=["Users"], status_code=status.HTTP_201_CREATED)
 def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
