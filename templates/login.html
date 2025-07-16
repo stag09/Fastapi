@@ -1,27 +1,25 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  </head>
-  <body>
-    <div class="container">
-      <h2>🔐 Login</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h2>🔐 Login</h2>
 
-      <!-- Login Inputs -->
+    <!-- ✅ Login Form -->
+    <form id="login-form" onsubmit="login(event)">
       <input type="text" id="username" placeholder="Username" required />
       <input type="password" id="password" placeholder="Password" required />
-      <button onclick="login()">Login</button>
+      <button type="submit">Login</button>
+    </form>
 
-      <!-- 👤 Register Link -->
-      <p style="text-align:center;">Don't have an account? <a href="/register">Register</a></p>
+    <p style="text-align:center;">Don't have an account? <a href="/register">Register</a></p>
+    <div id="message" style="text-align: center; margin-top: 10px;"></div>
+  </div>
 
-      <!-- Message Container -->
-      <div id="message" style="text-align: center; margin-top: 10px;"></div>
-    </div>
-
-    <!-- ✅ JS -->
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
-  </body>
-  </html>
+  <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>

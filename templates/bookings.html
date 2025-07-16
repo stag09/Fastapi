@@ -1,39 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Book a Room</title>
+  <meta charset="UTF-8">
+  <title>Bookings</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <div class="container">
-    <h2>📅 Room Booking</h2>
+    <h2>📅 Bookings</h2>
 
-    <!-- ✅ Logout Button -->
-    <button onclick="logout()" style="background-color: crimson; color: white; font-weight: bold; margin-bottom: 20px;">
-      🔒 Logout
-    </button>
+    <!-- Booking Form -->
+    <form id="booking-form" onsubmit="event.preventDefault(); createBooking();">
+      <input type="number" id="room_id" placeholder="Room ID" required />
+      <input type="text" id="booked_by" placeholder="Booked By" required />
+      <input type="datetime-local" id="start_time" required />
+      <input type="datetime-local" id="end_time" required />
+      <button type="submit">Create Booking</button>
+    </form>
 
-    <!-- ✅ Booking Form -->
-    <input type="number" id="room_id" placeholder="Room ID" />
-    <input type="text" id="booked_by" placeholder="Booked By" />
-    <input type="datetime-local" id="start_time" />
-    <input type="datetime-local" id="end_time" />
-    <button onclick="createBooking()">Create Booking</button>
-
-    <!-- ✅ Message area -->
-    <div id="message" style="text-align: center; font-weight: bold; margin-top: 20px;"></div>
-
-    <!-- ✅ Booking List -->
     <h3>📋 All Bookings</h3>
     <ul id="booking-list"></ul>
+
+    <button onclick="logout()">🚪 Logout</button>
   </div>
 
-  <!-- ✅ JavaScript -->
   <script src="{{ url_for('static', filename='scripts.js') }}"></script>
-  <script>
-    window.onload = loadBookings;
-  </script>
 </body>
 </html>
-

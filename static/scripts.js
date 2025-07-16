@@ -1,17 +1,13 @@
-// ✅ Base API URL
 const API_BASE = "http://127.0.0.1:8000";
-
-// ✅ Retrieve token from localStorage
 let token = localStorage.getItem("token");
 
-// ✅ Redirect if not logged in on /book page
 if (window.location.pathname === "/book" && !token) {
   alert("⚠️ Please login first.");
   window.location.href = "/";
 }
 
-// ✅ Login Function
-async function login() {
+async function login(event) {
+  event.preventDefault();
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
 
@@ -35,9 +31,8 @@ async function login() {
   }
 }
 
-// ✅ Register Function (no email)
 async function register(event) {
-  event.preventDefault(); // prevent form reload
+  event.preventDefault();
 
   const username = document.getElementById("register-username").value;
   const password = document.getElementById("register-password").value;
@@ -58,14 +53,12 @@ async function register(event) {
   }
 }
 
-// ✅ Logout
 function logout() {
   localStorage.removeItem("token");
   alert("👋 Logged out!");
   window.location.href = "/";
 }
 
-// ✅ Create Booking
 async function createBooking() {
   const booking = {
     room_id: parseInt(document.getElementById("room_id").value),
@@ -93,7 +86,6 @@ async function createBooking() {
   }
 }
 
-// ✅ Load All Bookings
 async function loadBookings() {
   const res = await fetch(`${API_BASE}/bookings/`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -119,7 +111,6 @@ async function loadBookings() {
   }
 }
 
-// ✅ Delete Booking
 async function deleteBooking(id) {
   const res = await fetch(`${API_BASE}/bookings/${id}`, {
     method: "DELETE",
@@ -134,7 +125,6 @@ async function deleteBooking(id) {
   }
 }
 
-// ✅ Edit Booking
 function editBooking(id) {
   const roomId = prompt("New Room ID:");
   const bookedBy = prompt("New Booked By:");
@@ -170,12 +160,6 @@ function editBooking(id) {
     });
 }
 
-// ✅ Load bookings on /book page
 if (window.location.pathname === "/book") {
   window.onload = loadBookings;
 }
-
-
-
-
-
