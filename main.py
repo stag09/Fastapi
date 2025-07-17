@@ -36,7 +36,7 @@ app.add_middleware(
 def read_root():
     return {"message": "Welcome to my FastAPI app!"}
 
-# --- User Registration ---
+
 @app.post("/register", response_model=schemas.UserOut, tags=["Users"], status_code=status.HTTP_201_CREATED)
 def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     if db.query(models.User).filter(models.User.username == user.username).first():
@@ -48,7 +48,7 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.refresh(new_user)
     return new_user
 
-# --- Login & Token ---
+
 @app.post("/token", tags=["Authorization"])
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.username == form_data.username).first()
@@ -57,7 +57,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     token = create_access_token(data={"sub": user.username})
     return {"access_token": token, "token_type": "bearer"}
 
-# --- Create Room ---
+
 @app.post("/rooms/", response_model=schemas.RoomOut, tags=["Rooms"], status_code=status.HTTP_201_CREATED)
 def create_room(room: schemas.RoomCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     if db.query(models.Room).filter(models.Room.name == room.name).first():
@@ -68,7 +68,7 @@ def create_room(room: schemas.RoomCreate, db: Session = Depends(get_db), current
     db.refresh(db_room)
     return db_room
 
-# --- Create Booking ---
+
 @app.post("/bookings/", response_model=schemas.BookingOut, tags=["Bookings"], status_code=status.HTTP_201_CREATED)
 def create_booking(booking: schemas.BookingCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     if booking.start_time >= booking.end_time:
@@ -88,12 +88,12 @@ def create_booking(booking: schemas.BookingCreate, db: Session = Depends(get_db)
     db.refresh(new_booking)
     return new_booking
 
-# --- List Bookings (User Specific) ---
+
 @app.get("/bookings/", response_model=list[schemas.BookingOut], tags=["Bookings"])
 def list_bookings(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     return db.query(models.Booking).filter(models.Booking.user_id == current_user.id).all()
 
-# --- Update Booking ---
+
 @app.put("/bookings/{booking_id}", response_model=schemas.BookingOut, tags=["Bookings"])
 def update_booking(
     booking_id: int,
@@ -127,7 +127,7 @@ def update_booking(
     db.refresh(existing)
     return existing
 
-# --- Delete Booking ---
+
 @app.delete("/bookings/{booking_id}", tags=["Bookings"], status_code=status.HTTP_204_NO_CONTENT)
 def delete_booking(booking_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     booking = db.query(models.Booking).filter(
