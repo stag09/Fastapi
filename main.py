@@ -122,7 +122,6 @@ def update_booking(
 
     for key, value in booking.dict().items():
         setattr(existing, key, value)
-
     db.commit()
     db.refresh(existing)
     return existing
