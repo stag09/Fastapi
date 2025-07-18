@@ -137,4 +137,4 @@ def delete_booking(booking_id: int, db: Session = Depends(get_db), current_user:
         raise HTTPException(status_code=404, detail="Booking not found")
     db.delete(booking)
     db.commit()
-    return booking
+    return {"message": f"Booking {booking_id} deleted successfully"}
