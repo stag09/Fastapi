@@ -25,4 +25,4 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     password = Column(String)
     email = Column(String, unique=True, index=True)
-   
+    
