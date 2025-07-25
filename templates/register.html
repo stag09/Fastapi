@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Register</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ request.url_for('static', filename='style.css') }}">
 </head>
 <body>
   <div class="container">
@@ -20,6 +20,7 @@
     <div id="message" style="text-align: center; margin-top: 10px;"></div>
   </div>
 
-  <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+  <script src="{{ request.url_for('static', filename='scripts.js') }}"></script>
 </body>
 </html>
+
