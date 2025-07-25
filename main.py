@@ -32,9 +32,9 @@ app.add_middleware(
 )
 
 
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to my FastAPI app!"}
+@app.get("/", include_in_schema=False)
+def home(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.post("/register", response_model=schemas.UserOut, tags=["Users"], status_code=status.HTTP_201_CREATED)
